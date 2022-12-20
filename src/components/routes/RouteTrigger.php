@@ -2,17 +2,11 @@
 namespace df\components\routes;
 
 use df\interfaces\anchors\IAnchor;
-use df\interfaces\applications\IApplication;
-use df\interfaces\applications\IApplicationEvent;
-use df\interfaces\applications\samples\states\fields\IStateField;
-use df\interfaces\applications\settings\IAppSetting;
+use df\interfaces\applications\dispatchers\IAppDispatcher;
 use df\interfaces\extensions\IExtensionAppSettings;
 use df\interfaces\extensions\IExtensionBPSConditions;
 use df\interfaces\extensions\IExtensionBPTransition;
-use df\interfaces\fields\IFieldPluginTarget;
-use df\interfaces\processes\states\conditions\IBPStateCondition;
 use df\interfaces\processes\states\IBPState;
-use df\interfaces\processes\transitions\fields\IBPTransitionField;
 use df\interfaces\processes\transitions\IBPTransition;
 use extas\components\exceptions\MissedOrUnknown;
 use extas\components\routes\dispatchers\JsonDispatcher;
@@ -22,9 +16,6 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * @method IRepository anchors()
  * @method IRepository bpTransitions()
- * @method IRepository bptFields()
- * @method IRepository pluginsTargets()
- * @method IRepository statesFields()
  */
 class RouteTrigger extends JsonDispatcher
 {
@@ -43,7 +34,7 @@ class RouteTrigger extends JsonDispatcher
             $targetBody = $this->getTargetBody($bpt);
             $targetDisp = $this->getTargetAppDispatcher($bpt);
             $this->setResponseData(
-                $targetDisp->setTarget($bpt->getTarget()->getName())->trigger($targetBody)->getData()
+                $targetDisp->trigger($bpt->getTarget()->getName(), $targetBody)
             );
         } catch (\Exception $e) {
             $this->setResponseData([], $e->getMessage());
@@ -97,12 +88,9 @@ class RouteTrigger extends JsonDispatcher
         return $app->getDispatcher();
     }
 
-    protected function validateEvent($dispatcher, IBPState $bps): void
+    protected function validateEvent(IAppDispatcher $dispatcher, IBPState $bps): void
     {
-        /**
-         * @var IApplicationEvent $event
-         */
-        $event = $dispatcher->getEvent($bps->getName());
+        $event = $dispatcher->getEvent($bps->getName(), $this);
 
         /**
          * @var IExtensionBPSConditions $bps
@@ -135,7 +123,7 @@ class RouteTrigger extends JsonDispatcher
         return $targetBody;
     }
 
-    protected function getTargetAppDispatcher(IBPTransition $bpt)
+    protected function getTargetAppDispatcher(IBPTransition $bpt): IAppDispatcher
     {
         /**
          * @var IExtensionAppSettings $app

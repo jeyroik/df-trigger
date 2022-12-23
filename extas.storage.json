@@ -1,0 +1,45 @@
+{
+    "name": "jeyroik/df-trigger",
+    "tables": {
+        "operators": {
+            "namespace": "repositories",
+            "item_class": "\\df\\components\\operators\\Operator",
+            "pk": "id",
+            "code": {
+                "create-before": "\\extas\\components\\UUID::setId($item);"
+            }
+        }
+    },
+    "extensions": [
+        {
+            "class": "\\df\\components\\extensions\\ExtensionAppSettings",
+            "interface": "\\df\\interfaces\\extensions\\IExtensionAppSettings",
+            "subject": "df.app",
+            "methods": ["getSettings", "getSetting", "getDispatcher"]
+        },
+        {
+            "class": "\\df\\components\\extensions\\ExtensionBPS",
+            "interface": "\\df\\interfaces\\extensions\\IExtensionBPS",
+            "subject": "df.bp.state",
+            "methods": ["getConditions", "isApplicableEvent"]
+        },
+        {
+            "class": "\\df\\components\\extensions\\ExtensionBPTField",
+            "interface": "\\df\\interfaces\\extensions\\IExtensionBPTField",
+            "subject": "df.bp.transition.field",
+            "methods": ["applyFieldPlugins"]
+        },
+        {
+            "class": "\\df\\components\\extensions\\ExtensionBPTransition",
+            "interface": "\\df\\interfaces\\extensions\\IExtensionBPTransition",
+            "subject": "df.bp.transition",
+            "methods": ["getTargetFields"]
+        },
+        {
+            "class": "\\df\\components\\extensions\\ExtensionCondition",
+            "interface": "\\df\\interfaces\\extensions\\IExtensionCondition",
+            "subject": "df.bp.state.condition",
+            "methods": ["isValidFor"]
+        }
+    ]
+}

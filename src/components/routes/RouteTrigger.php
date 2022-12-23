@@ -4,7 +4,7 @@ namespace df\components\routes;
 use df\interfaces\anchors\IAnchor;
 use df\interfaces\applications\dispatchers\IAppDispatcher;
 use df\interfaces\extensions\IExtensionAppSettings;
-use df\interfaces\extensions\IExtensionBPSConditions;
+use df\interfaces\extensions\IExtensionBPS;
 use df\interfaces\extensions\IExtensionBPTransition;
 use df\interfaces\processes\states\IBPState;
 use df\interfaces\processes\transitions\IBPTransition;
@@ -93,7 +93,7 @@ class RouteTrigger extends JsonDispatcher
         $event = $dispatcher->getEvent($bps->getName(), $this);
 
         /**
-         * @var IExtensionBPSConditions $bps
+         * @var IExtensionBPS $bps
          */
         if (!$bps->isApplicableEvent($event)) {
             throw new \Exception('Incompatible state data');

@@ -1,0 +1,26 @@
+{
+    "name": "jeyroik/df-trigger",
+    "operators": [
+        {
+            "name": "eq",
+            "title": "Simple Equal",
+            "description": "Simple equal comparation without type checking",
+            "class": "\\df\\components\\operators\\validators\\VEqual"
+        },
+        {
+            "name": "eq-int",
+            "title": "Equal integers",
+            "description": "Integers equal comparation",
+            "class": "\\df\\components\\operators\\validators\\VEqInt"
+        }
+    ],
+    "routes": [
+        {
+            "name": "\/v1\/trigger/{anchor}",
+            "title": "Flow trigger v1",
+            "description": "Flow trigger v1",
+            "method": "post",
+            "class": "\\df\\components\\routes\\RouteTrigger"
+        }
+    ]
+}

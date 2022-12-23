@@ -1,0 +1,21 @@
+{
+  "name": "jeyroik/df-trigger",
+  "description": "DF trigger package",
+  "require": {
+    "jeyroik/df-foundation": "0.*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9",
+    "vlucas/phpdotenv": "^5.5",
+    "phpstan/phpstan": "0.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "df\\": "src/"
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit --testdox --coverage-clover=coverage.xml --whitelist=src tests",
+    "stan": "vendor/bin/phpstan analyse -l 5 src"
+  }
+}
